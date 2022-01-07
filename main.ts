@@ -10,6 +10,21 @@ import { SPIRIT_BOX } from "./messages.ts";
 
 const DISCORD_BOT_TOKEN = "DISCORD_BOT_TOKEN";
 
+export function getResponse(message: string): string | null {
+  let content = message.toLowerCase();
+  if (content.endsWith("?")) {
+    content = content.substring(0, content.length - 1);
+  }
+  for (const info of SPIRIT_BOX) {
+    if (info.triggers.includes(content)) {
+      return info.responses[
+        Math.ceil(Math.random() * info.responses.length) - 1
+      ];
+    }
+  }
+  return null;
+}
+
 async function main(token: string | undefined): Promise<void> {
   if (!token) {
     console.log(
@@ -30,27 +45,18 @@ async function main(token: string | undefined): Promise<void> {
           return;
         }
         try {
-          const content = message.content.toLowerCase();
-          for (const info of SPIRIT_BOX) {
-            if (
-              info.triggers.includes(content) ||
-              info.triggers.includes(`${content}?`)
-            ) {
-              const content =
-                info.responses[
-                  Math.ceil(Math.random() * info.responses.length) - 1
-                ];
-              sendMessage(bot, message.channelId, {
-                content,
-                messageReference: {
-                  messageId: message.id,
-                  channelId: message.channelId,
-                  failIfNotExists: true,
-                },
-              });
-              return;
-            }
+          const content = getResponse(message.content);
+          if (!content) {
+            return;
           }
+          sendMessage(bot, message.channelId, {
+            content,
+            messageReference: {
+              messageId: message.id,
+              channelId: message.channelId,
+              failIfNotExists: true,
+            },
+          });
         } catch (e) {
           console.error(`Error processing message: ${e}`);
         }
