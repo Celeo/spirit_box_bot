@@ -32,7 +32,10 @@ async function main(token: string | undefined): Promise<void> {
         try {
           const content = message.content.toLowerCase();
           for (const info of SPIRIT_BOX) {
-            if (info.triggers.includes(content)) {
+            if (
+              info.triggers.includes(content) ||
+              info.triggers.includes(`${content}?`)
+            ) {
               const content =
                 info.responses[
                   Math.ceil(Math.random() * info.responses.length) - 1
