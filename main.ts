@@ -19,7 +19,7 @@ async function main(token: string | undefined): Promise<void> {
   }
   const baseBot = createBot({
     token,
-    intents: ["Guilds", "GuildMessages"],
+    intents: ["GuildMessages"],
     botId: BigInt(atob(token.split(".")[0])),
     events: {
       ready() {
