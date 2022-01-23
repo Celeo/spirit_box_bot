@@ -40,7 +40,7 @@ async function main(token: string | undefined): Promise<void> {
       ready() {
         console.log("Successfully connected to gateway");
       },
-      messageCreate(_bot, message) {
+      async messageCreate(_bot, message) {
         if (message.isBot) {
           return;
         }
@@ -49,7 +49,7 @@ async function main(token: string | undefined): Promise<void> {
           if (!content) {
             return;
           }
-          sendMessage(bot, message.channelId, {
+          await sendMessage(bot, message.channelId, {
             content,
             messageReference: {
               messageId: message.id,
