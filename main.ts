@@ -17,9 +17,7 @@ export function getResponse(message: string): string | null {
   }
   for (const info of SPIRIT_BOX) {
     if (info.triggers.includes(content)) {
-      return info.responses[
-        Math.ceil(Math.random() * info.responses.length) - 1
-      ];
+      return info.responses[Math.floor(Math.random() * info.responses.length)];
     }
   }
   return null;
