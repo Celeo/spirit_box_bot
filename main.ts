@@ -1,10 +1,9 @@
 import {
   config,
   createBot,
-  enableCachePlugin,
-  enableCacheSweepers,
-  startBot,
+  GatewayIntents,
   sendMessage,
+  startBot,
 } from "./deps.ts";
 import { SPIRIT_BOX } from "./messages.ts";
 
@@ -26,20 +25,20 @@ export function getResponse(message: string): string | null {
 async function main(token: string | undefined): Promise<void> {
   if (!token) {
     console.log(
-      `No token supplied, set the ${DISCORD_BOT_TOKEN} environment variable and run again`
+      `No token supplied; set the ${DISCORD_BOT_TOKEN} environment variable and run again`
     );
     return;
   }
-  const baseBot = createBot({
+  const bot = createBot({
     token,
-    intents: ["GuildMessages"],
+    intents: GatewayIntents.GuildMessages,
     botId: BigInt(atob(token.split(".")[0])),
     events: {
       ready() {
         console.log("Successfully connected to gateway");
       },
       async messageCreate(_bot, message) {
-        if (message.isBot) {
+        if (message.isFromBot) {
           return;
         }
         try {
@@ -61,8 +60,6 @@ async function main(token: string | undefined): Promise<void> {
       },
     },
   });
-  const bot = enableCachePlugin(baseBot);
-  enableCacheSweepers(bot);
   console.log("Starting bot ...");
   await startBot(bot);
 }

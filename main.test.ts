@@ -1,7 +1,7 @@
 import {
   assert,
   assertEquals,
-} from "https://deno.land/std@0.120.0/testing/asserts.ts";
+} from "https://deno.land/std@0.176.0/testing/asserts.ts";
 import { getResponse } from "./main.ts";
 
 Deno.test("getResponse - works for lowercase", () => {
