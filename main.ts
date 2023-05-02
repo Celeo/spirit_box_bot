@@ -1,10 +1,10 @@
 import {
-  config,
   createBot,
   GatewayIntents,
   sendMessage,
   startBot,
-} from "./deps.ts";
+} from "https://deno.land/x/discordeno@17.0.1/mod.ts";
+import "https://deno.land/std@0.185.0/dotenv/load.ts";
 import { SPIRIT_BOX } from "./messages.ts";
 
 const DISCORD_BOT_TOKEN = "DISCORD_BOT_TOKEN";
@@ -65,6 +65,5 @@ async function main(token: string | undefined): Promise<void> {
 }
 
 if (import.meta.main) {
-  const dotenv = config();
-  await main(dotenv[DISCORD_BOT_TOKEN]);
+  await main(Deno.env.get(DISCORD_BOT_TOKEN));
 }
