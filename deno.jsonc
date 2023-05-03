@@ -1,8 +1,6 @@
 {
   "tasks": {
     "run": "deno run --allow-read=.env,.env.defaults,.env.example --allow-env --allow-net main.ts",
-    "compile": "deno compile --allow-read=.env,.env.defaults,.env.example --allow-env --allow-net --output spirit_box_bot main.ts",
-    "docker:build": "docker build -t spirit_box_bot .",
-    "docker:run": "docker run --rm -v ./.env:/opt/.env spirit_box_bot"
+    "compile": "deno compile --allow-read=.env,.env.defaults,.env.example --allow-env --allow-net --output spirit_box_bot main.ts"
   }
 }
