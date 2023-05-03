@@ -5,5 +5,3 @@
 
 app = "celeo-spirit-box-bot"
 primary_region = "lax"
-kill_signal = "SIGINT"
-kill_timeout = "5s"
