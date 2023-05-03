@@ -31,7 +31,7 @@ async function main(token: string | undefined): Promise<void> {
   }
   const bot = createBot({
     token,
-    intents: GatewayIntents.GuildMessages,
+    intents: GatewayIntents.GuildMessages | GatewayIntents.MessageContent,
     botId: BigInt(atob(token.split(".")[0])),
     events: {
       ready() {
