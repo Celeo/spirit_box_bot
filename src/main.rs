@@ -49,11 +49,8 @@ async fn handle_event(event: Event, http: Arc<HttpClient>) -> Result<()> {
         }
 
         // respond to specific comments
-        let mut text = msg.content.to_lowercase();
-        if text.ends_with('?') {
-            text = text[0..text.len() - 1].to_string();
-        }
-        let text = text.trim();
+        let text = msg.content.to_lowercase();
+        let text = text.trim().trim_end_matches(['?', '.', '!']).trim_end();
         for pair in SPIRIT_BOX.iter() {
             if pair.0.contains(&text) {
                 let response = pair.1.choose(&mut rand::rng()).unwrap();
