@@ -4,9 +4,9 @@ use anyhow::Result;
 use dotenv::dotenv;
 use log::{error, info, warn};
 use messages::SPIRIT_BOX;
-use rand::prelude::SliceRandom;
+use rand::prelude::IndexedRandom;
 use std::{env, sync::Arc};
-use twilight_gateway::{Event, Intents, Shard, ShardId};
+use twilight_gateway::{Event, EventTypeFlags, Intents, Shard, ShardId, StreamExt};
 use twilight_http::Client as HttpClient;
 
 mod messages;
@@ -27,15 +27,9 @@ async fn main() {
 
     info!("Waiting for events");
     loop {
-        let event = match shard.next_event().await {
-            Ok(event) => event,
-            Err(source) => {
-                warn!("Error receiving event: {:?}", source);
-                if source.is_fatal() {
-                    break;
-                }
-                continue;
-            }
+        let Some(Ok(event)) = shard.next_event(EventTypeFlags::all()).await else {
+            warn!("Error receiving event");
+            continue;
         };
         let http = Arc::clone(&http);
         tokio::spawn(async move {
@@ -62,10 +56,10 @@ async fn handle_event(event: Event, http: Arc<HttpClient>) -> Result<()> {
         let text = text.trim();
         for pair in SPIRIT_BOX.iter() {
             if pair.0.contains(&text) {
-                let response = pair.1.choose(&mut rand::thread_rng()).unwrap();
+                let response = pair.1.choose(&mut rand::rng()).unwrap();
                 http.create_message(msg.channel_id)
                     .reply(msg.id)
-                    .content(response)?
+                    .content(response)
                     .await?;
                 return Ok(());
             }

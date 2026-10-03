@@ -1,4 +1,4 @@
-FROM rust:latest as builder
+FROM rust:latest AS builder
 
 WORKDIR /usr/src/app
 COPY . .
@@ -8,7 +8,7 @@ RUN --mount=type=cache,target=/usr/local/cargo,from=rust:latest,source=/usr/loca
     cargo build --release && mv ./target/release/spirit_box_bot ./spirit_box_bot
 
 # Runtime image
-FROM debian:bookworm-slim
+FROM debian:trixie-slim
 RUN apt update && apt install ca-certificates -y && apt-get clean
 # Run as "app" user
 RUN useradd -ms /bin/bash app

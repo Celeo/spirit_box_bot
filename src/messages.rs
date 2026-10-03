@@ -1,6 +1,6 @@
-use once_cell::sync::Lazy;
+use std::sync::LazyLock;
 
-pub static SPIRIT_BOX: Lazy<Vec<(Vec<&str>, Vec<&str>)>> = Lazy::new(|| {
+pub static SPIRIT_BOX: LazyLock<Vec<(Vec<&str>, Vec<&str>)>> = LazyLock::new(|| {
     vec![
         (
             vec![
